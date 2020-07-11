@@ -12,7 +12,7 @@ Black Scholes formula
 import matplotlib.pyplot as plt
 import pandas as pd
 
-def option_payoff(s, k, p, option = 'LongCall'):
+def option_payoff(s, k, p, option = 'LongCall', graph = True, tab = True):
     #   s: spot prices
     #   k: strike price
     #   pl: profit/loss
@@ -52,23 +52,25 @@ def option_payoff(s, k, p, option = 'LongCall'):
             else:
                 pl.append(p) 
             be = k - p
-            
-    # Graph
-    fig, ax = plt.subplots()
-    fig = plt.plot(s, pl, 'b-')
-    plt.plot(s, [0] * len(s))
-    plt.plot(be, 0, 'r*')
-    plt.grid(1)
-    ax.set_ylabel('P/L')
-    ax.set_xlabel('Spot Price \n \n ' + 'p =' + str(p) + ', k =' + str(k) + ', break-even = ' + str(be) )
-    plt.title('P/L of a '+ option)
+     
+    if graph == True:        
+        # Graph
+        fig, ax = plt.subplots()
+        fig = plt.plot(s, pl, 'b-')
+        plt.plot(s, [0] * len(s))
+        plt.plot(be, 0, 'r*')
+        plt.grid(1)
+        ax.set_ylabel('P/L')
+        ax.set_xlabel('Spot Price \n \n ' + 'p =' + str(p) + ', k =' + str(k) + ', break-even = ' + str(be) )
+        plt.title('P/L of a '+ option)
     
-    tab = pd.DataFrame()
-    tab['Prices'] = s
-    tab['PL'] = pl
-    tab = tab.set_index(['Prices'])
-    return tab
+    if tab == True:
+        tab = pd.DataFrame()
+        tab['Prices'] = s
+        tab['PL'] = pl
+        tab = tab.set_index(['Prices'])
+        return tab
 
-option_payoff(list(range(0, 181)) , 100, 50, 'ShortCall')
+option_payoff(list(range(0, 181)) , 100, 50, 'ShortCall', True, False)
 
 
