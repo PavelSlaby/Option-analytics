@@ -73,4 +73,41 @@ def option_payoff(s, k, p, option = 'LongCall', graph = True, tab = True):
 
 option_payoff(list(range(0, 181)) , 100, 50, 'ShortCall', True, False)
 
+#Strategy function
 
+def Strategy(s1, s2, options, title = None):
+        
+    s = list(range(s1, s2))  # range of spot prices
+    
+    ops = list(range(0, len(options) )) 
+    num = ops.copy()
+    
+    for i in ops: #creates payoffs for each option
+        ops[i] = option_payoff(s, options[i][0], options[i][1], options[i][2], False, True) 
+    
+    fin = ops[0].copy()
+    
+    for i in num[1:]:   #calculates final payoff
+        fin['PL'] = fin['PL'] + ops[i]['PL']
+    
+     # Graph
+    fig, ax = plt.subplots()
+    fig = plt.plot(s, fin['PL'], 'r-', label = 'Strategy P/L', lw = 2)
+    for i in num:
+        plt.plot(s, ops[i]['PL'], label = options[i][2] + ', k= ' + str(options[i][0]) + ', p =' + str(options[i][1]), lw = 1 )
+    
+    plt.grid(1)
+    ax.set_ylabel('P/L')
+    ax.set_xlabel('Spot Price')
+    plt.legend(loc = 0)
+    plt.title('P/L of a selected strategy: ' + title )
+
+# various strategies
+
+Strategy(50, 100, [[90, 10, 'ShortCall']]) # Short Call
+
+Strategy(50, 150,  [[90, 10, 'ShortCall'], [100, 5, 'LongCall'], [80, 10, 'LongCall'], [90, 10, 'ShortCall']], 'Butterfly') # butterfly
+
+Strategy(50, 150,  [[80, 5, 'LongCall'], [80, 10, 'LongPut']]) # Long straddle
+
+Strategy(50, 150,  [[120, 5, 'LongCall'], [80, 10, 'LongPut']]) # Long straddle
