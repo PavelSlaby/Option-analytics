@@ -71,12 +71,17 @@ def option_payoff(s, k, p, option = 'LongCall', graph = True, tab = True):
         tab = tab.set_index(['Prices'])
         return tab
 
-option_payoff(list(range(0, 181)) , 100, 50, 'ShortCall', True, False)
 
-#Strategy function
+option_payoff(list(range(0, 150)) , 100, 5, 'LongCall', True, True)
+
+#%% Option Strategy Function
+
+import matplotlib.pyplot as plt
+import pandas as pd
 
 def Strategy(s1, s2, options, title = None):
-        
+    
+    if title is None: title = ''    
     s = list(range(s1, s2))  # range of spot prices
     
     ops = list(range(0, len(options) )) 
@@ -102,12 +107,28 @@ def Strategy(s1, s2, options, title = None):
     plt.legend(loc = 0)
     plt.title('P/L of a selected strategy: ' + title )
 
-# various strategies
+#%% various strategies
 
 Strategy(50, 100, [[90, 10, 'ShortCall']]) # Short Call
 
-Strategy(50, 150,  [[90, 10, 'ShortCall'], [100, 5, 'LongCall'], [80, 10, 'LongCall'], [90, 10, 'ShortCall']], 'Butterfly') # butterfly
+# Bull Call Spread
+Strategy(50, 150,  [[80, 5, 'LongCall'], [100, 10, 'ShortCall']]) 
+# Bull Put spread
+Strategy(50, 150,  [[80, 5, 'LongPut'], [100, 10, 'ShortPut']]) 
 
-Strategy(50, 150,  [[80, 5, 'LongCall'], [80, 10, 'LongPut']]) # Long straddle
+# Bear Put Spread
+Strategy(50, 150,  [[80, 5, 'ShortPut'], [100, 10, 'LongPut']]) 
+# Bear call spread
+Strategy(50, 150,  [[80, 5, 'ShortCall'], [100, 10, 'LongCall']]) 
 
-Strategy(50, 150,  [[120, 5, 'LongCall'], [80, 10, 'LongPut']]) # Long straddle
+# Long straddle
+Strategy(50, 150,  [[80, 5, 'LongCall'], [80, 10, 'LongPut']]) 
+# Long strandle
+Strategy(50, 150,  [[80, 5, 'LongCall'], [100, 10, 'LongPut']]) 
+
+
+#  Iron condor  (simultaneously holds a bull put spread and a bear call spread)
+Strategy(50, 150,  [[90, 5, 'ShortCall'], [110, 10, 'LongCall'], [80, 5, 'LongPut'], [100, 10, 'ShortPut']], 'Butterfly') # butterfly
+#   Iron condor  (simultaneously holds a bull put spread and a bear call spread)
+Strategy(50, 150,  [[80, 5, 'ShortCall'], [100, 10, 'LongCall'], [90, 5, 'LongPut'], [110, 10, 'ShortPut']], 'Butterfly') # butterfly
+
