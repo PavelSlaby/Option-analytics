@@ -1,5 +1,4 @@
-# binomial model fro pricing european stock options
-
+# binomial model for pricing european stock options
 
 '''
 S - stock price today
@@ -11,14 +10,19 @@ N - number of steps in the binomial model
 '''    
 
 
+%precision 1
+np.set_printoptions(suppress=True) # supresses scientific notations when printing numpy arrays
+
+      
+
 import numpy as np
 import math
 
-S0 = 100
-K = 100
-T = 1
-r = 0
-sigma = math.log(1.2)
+S0 = 60
+K = 50
+T = 2
+r = 0.05
+sigma = math.log(1.4)
 N = 10
 dt = T/N
 
@@ -27,17 +31,17 @@ d = 1/u
 
 p = (math.exp(r * T/N) - d)/ (u - d) #risk-neutral probability of an up-movement
 
-PriceTree = np.zeros([N, N]) #initiates an array of predicted stock prices
+PriceTree = np.zeros([N+1, N+1]) #initiates an array of predicted stock prices
 
 
 N #number of final nodes = number of steps
 
 
 for i in range(0, N) :
-    PriceTree[i, N-1] = S0 * (d**i) * u**(N-1-i)  #generates the stock price at time N (the final node)
+    PriceTree[i, N] = S0 * (d**i) * u**(N-i)  #generates the stock price at time N (the final node)
 
 
-for j in range(N-2, -1, -1):
+for j in range(N-1, -1, -1):
     for i in range(0, j + 1):
        PriceTree[i, j] = (PriceTree[i, j+1]) / u  #we move from the N-1th column back to the first column and by discounting the follwoing column by 1/u
     
@@ -46,7 +50,7 @@ for j in range(N-2, -1, -1):
 
 ValueTree = PriceTree.copy()    
 
-for j in range(N-1, -1, -1):
+for j in range(N, -1, -1):
     for i in range(0, j + 1):
        ValueTree[i, j] =  max(ValueTree[i, j] - K, 0)
 
@@ -55,47 +59,20 @@ for j in range(N-1, -1, -1):
 
 FinTree = ValueTree.copy()
 
-for j in range(N-2, -1, -1):
+for j in range(N-1, -1, -1):
     for i in range(0, j + 1):      
-       FinTree[i, j] =  math.exp(-r * dt)  * (FinTree[i, j+1]) * p + (FinTree[i+1, j+1] * (1-p))
+       FinTree[i, j] =  math.exp(-r * dt)  * (FinTree[i, j+1] * (p) + FinTree[i+1, j+1] * (1-p))
 
    
-print(PriceTree)
-print(ValueTree)
+#print(PriceTree)
+#print(ValueTree)
+
+print(FinTree[0,0])
+    
 print(FinTree)
-    
-    
-    PriceTree[0, 8] = 8
-    
-    
 
 
-
-%precision 1
-
-np.set_printoptions(suppress=True)
-
-
-
-
-
-
-
-
-
-
-
-
-
-PriceTree[0, 0] = 1
-
-for j in range(1, N+1):
-    for i in range(1, j+1):
-        PriceTree[i -1 , j-1] = 9
-        
-PriceTree        
-        
-        
+  
 
 
 
