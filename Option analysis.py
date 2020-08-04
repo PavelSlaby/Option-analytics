@@ -436,9 +436,14 @@ def OptionGrapher(s, k, p, option = 'LongCall'):
      
     #---
     pr = []
-    for i in s:
-        pr.append(option_pricer(i, k, 1, 0.05, 0.25))
-        
+    
+    if option == 'LongCall': 
+        for i in s:
+            pr.append(option_pricer(i, k, 1, 0.05, 0.25, option = 'call'))
+    elif option == 'LongPut':
+            for i in s:
+                 pr.append(option_pricer(i, k, 1, 0.05, 0.25, option = 'put'))
+
     diff = []
     for i in range(len(pl)):
         diff.append(pr[i] - pl[i])
@@ -458,4 +463,11 @@ def OptionGrapher(s, k, p, option = 'LongCall'):
 
       
 
-OptionGrapher(range(1, 181) , 100, 0, 'LongCall')
+OptionGrapher(range(0, 150) , 100, 0, 'LongPut')
+OptionGrapher(range(0, 150) , 100, 0, 'LongCall')
+''' 
+See the difference in the graphs? the negative time value for too deep in the money options....
+'''
+
+
+
