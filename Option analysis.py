@@ -467,6 +467,7 @@ OptionGrapher(range(0, 150) , 100, 0, 'LongPut')
 OptionGrapher(range(0, 150) , 100, 0, 'LongCall')
 ''' 
 See the difference in the graphs? the negative time value for too deep in the money options....
+if we set interest rate r = 0.0 there is no negative time value any more...
 '''
 
 
