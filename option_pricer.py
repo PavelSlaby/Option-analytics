@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 #%% Black scholes merton dividend formula 
 
 '''
@@ -28,4 +26,4 @@ def option_pricer(s, k, t, r, sigma, q =0 , option = 'call'):
 
     return price
 
-#option_pricer(49, 50, 0.3846, 0.05, 0.20, 0.13, option = "call")
+option_pricer(49, 50, 0.3846, 0.05, 0.20, 0, option = "call")
