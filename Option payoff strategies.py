@@ -1,5 +1,4 @@
 #%% Options profit scenarios
-
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -22,8 +21,7 @@ for i in s:
     else:
         pl.append(-1 * p)  
     be = k + p
-    
-   
+     
 fig, ax = plt.subplots()
 fig = plt.plot(s, pl, 'b-')
 plt.plot(s, [0] * len(s))
@@ -33,7 +31,6 @@ plt.grid(1)
 ax.set_ylabel('P/L')
 ax.set_xlabel('Spot Price \n \n ' + 'p =' + str(p) + ', k =' + str(k) + ', break-even = ' + str(be) )
 plt.title('P/L of a \'Long Call\'')
-
 
 tab = pd.DataFrame()
 tab['Prices'] = s
@@ -132,7 +129,7 @@ tab
 import matplotlib.pyplot as plt
 import pandas as pd
 
-def option_payoff(s, k, p, option = 'LongCall', graph = True, tab = True):
+def option_payoff(s, k, p, option = 'LongCall', graph = True, tab = False):
     #   s: spot prices
     #   k: strike price
     #   pl: profit/loss
@@ -185,7 +182,7 @@ def option_payoff(s, k, p, option = 'LongCall', graph = True, tab = True):
         ax.set_xlabel('Spot Price \n \n ' + 'p =' + str(p) + ', k =' + str(k) + ', break-even = ' + str(be) )
         plt.title('P/L of a '+ option)
     
-    if tab == True:
+    if tab == True:  # returns pl table if true, false is default
         tab = pd.DataFrame()
         tab['Prices'] = s
         tab['PL'] = pl
@@ -252,3 +249,4 @@ Strategy(50, 150,  [[80, 5, 'LongCall'], [100, 10, 'LongPut']])
 Strategy(50, 150,  [[90, 5, 'ShortCall'], [110, 10, 'LongCall'], [80, 5, 'LongPut'], [100, 10, 'ShortPut']], 'Butterfly') # butterfly
 #   Iron condor  (simultaneously holds a bull put spread and a bear call spread)
 Strategy(50, 150,  [[80, 5, 'ShortCall'], [100, 10, 'LongCall'], [90, 5, 'LongPut'], [110, 10, 'ShortPut']], 'Butterfly') # butterfly
+
