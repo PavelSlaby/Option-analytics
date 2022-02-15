@@ -3,7 +3,7 @@ import os
 os.getcwd()
 os.chdir("F:\_Python\Option Analytics")
 
-from option_pricer import option_pricer
+from option_pricer import option_pricer #uploaded in the same repository
 
 option_pricer(49, 50, 0.3846, 0.05, 0.20, 0.13, option = "call")
 
