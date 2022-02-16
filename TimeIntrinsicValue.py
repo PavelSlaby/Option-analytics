@@ -1,9 +1,11 @@
-#%% combined graphs
 import os
 os.getcwd()
 os.chdir("F:\_Python\Option Analytics")
 
-from option_pricer import option_pricer
+import matplotlib.pyplot as plt
+
+from option_pricer import option_pricer #included in the same repository
+
 
 
 def OptionGrapher(s, k, p, option = 'LongCall'):
@@ -72,5 +74,3 @@ def OptionGrapher(s, k, p, option = 'LongCall'):
       
 OptionGrapher(range(0, 150) , 100, 0, 'LongCall')
 OptionGrapher(range(0, 150) , 100, 0, 'LongPut')  # thanks to discounting the time value can be actually negative
-
-
