@@ -1,3 +1,5 @@
+#shows the relationship between intrinsic value, time value, and option price
+
 import os
 os.getcwd()
 os.chdir("F:\_Python\Option Analytics")
