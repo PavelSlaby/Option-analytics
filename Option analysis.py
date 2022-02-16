@@ -1,184 +1,74 @@
-#%% Import Option pricer
-import os
-os.getcwd()
-os.chdir("F:\_Python\Option Analytics")
-
-from option_pricer import option_pricer #uploaded in the same repository
-
-option_pricer(49, 50, 0.3846, 0.05, 0.20, 0.13, option = "call")
-
-#%% Graphs that show relationship between various variables and the option value
+'''
+graphical comparison of several statistical distirbutions
+'''
 
 import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
 
-## Call: Strike and Price ----------------------------------------------------
-p = [] #axis Y: list of prices
-k = range(1, 200, 5) #axis x 
+import os
+os.getcwd()
+os.chdir("F:\_Python\misc projects")
 
-for i in k:
-    p.append(option_pricer(100, i, 1, 0.05, 0.25))
-    
-plt.plot(k, p, color= "red")    
-plt.xlabel("Strike - K")
-plt.ylabel("Price - P")
-plt.legend(["Price - P"]) 
-plt.title("Relationship between strike and option value - call option ")
-
-## Call: Spot and Price ----------------------------------------------------
-p = []
-s = range(1, 175, 5)
-
-for i in s:
-    p.append(option_pricer(i, 100, 1, 0.05, 0.25))
-    
-plt.plot(s, p, color= "red")    
-plt.xlabel("Spot - S")
-plt.ylabel("Price - P")
-plt.legend(["Price - P"]) 
-plt.title("Relationship between spot and option value - call option")
+from square_divisors import square_divisors #uploaded in the same repository
 
 
-## Call: Time and Price ----------------------------------------------------
-p = []
-t = range(1, 200, 5)
+# parameters
+sample = 1000 #sample size
+loc = 0
+scale = 1
+shape = 2
+a = 1
+b = 5
+n = 100
+p = 0.5
+alpha = (10, 10, 3)
+dfnum = 10
+dfden = 5
+nbins = int(sample / 10)
+df = 5
+lam = 0.9
 
-for i in t:
-    p.append(option_pricer(100, 10, i, 0.05, 0.25))
-    
-plt.plot(t, p, color= "red")    
-plt.xlabel("time - T")
-plt.ylabel("Price - P")
-plt.legend(["Price - P"]) 
-plt.title("Relationship between time and option value")
+# define which distributions to display
+distributions = {
+    'Beta':         np.random.beta(a, b, sample),    
+    'Binomial':     np.random.binomial(n, p, sample),  
+    'chisquare':    np.random.chisquare(df, sample),       
+    'Dirichlet':    np.random.dirichlet(alpha, sample),
+    'Exponential':  np.random.exponential(scale, sample),
+    'F distribution': np.random.f(dfnum, dfden, sample),
+    'Gamma':        np.random.gamma(shape, scale ,sample),
+    'Geometric':    np.random.geometric(p, sample),
+    'Laplace':      np.random.laplace(loc, scale, sample),
+    'Logistic':     np.random.logistic(loc, scale, sample),
+    'Lognormal':    np.random.lognormal(loc, scale, sample),
+    'Standard Normal': np.random.standard_normal(sample),
+    'Normal':       np.random.normal(loc, scale, sample),
+    'Pareto':       np.random.pareto(a, sample),
+    'Poisson':      np.random.poisson(lam, sample),
+    'standard_t':   np.random.standard_t(df, sample),
+    'uniform':      np.random.uniform(a,b, sample),
+    'weibull':      np.random.weibull(a, sample)                               
+                }
 
-# at very long times to expiration the option value is (almost) equal to the spot price. Why? Is that realistic? 
-# One way to think about it is as follows, the future strike price discounted (by a long time) to the present, is equal almost to zero. So the difference between the spot price and discounted K is equal the spot price
-
-# Call: Risk-free rate and Price ----------------------------------------------------
-p = []
-r = range(5, 200, 5)
-
-for i in r:
-    p.append(option_pricer(100, 50, 1, i/100, 0.25))
-    
-plt.plot(r, p, color= "red")    
-plt.xlabel("risk-free rate - r")
-plt.ylabel("Price - P")
-plt.legend(["Price - P"]) 
-plt.title("Relationship between risk-free rate and option value")
-
-
-# Call: Volatility rate and Price ----------------------------------------------------
-p = []
-v = range(5, 100, 5)
-
-for i in v:
-    p.append(option_pricer(100, 50, 1, 0.05, i/100))
-   
-plt.plot(v, p, color= "red")    
-plt.xlabel("volatility - v")
-plt.ylabel("Price - P")
-plt.legend(["Price - P"]) 
-plt.title("Relationship between risk-free rate and option value")
-
-
-# Call: Dividend rate and Price ----------------------------------------------------
-p = []
-q = range(5, 100, 5)
-
-for i in q:
-    p.append(option_pricer(100, 50, 1, 0.05, 0.05, i/100))
-   
-plt.plot(q, p, color= "red")    
-plt.xlabel("dividend rate - q")
-plt.ylabel("Price - P")
-plt.legend(["Price - P"]) 
-plt.title("Relationship between dividend rate and option value")
-
-#%% Put Option
-
-# Put: Strike and Price 
-p = []
-k = range(1, 200, 5)
-
-for i in k:
-    p.append(option_pricer(100, i, 1, 0.05, 0.25, option = 'put'))
-    
-
-plt.plot(k, p, color= "red")    
-plt.xlabel("Strike - K")
-plt.ylabel("Price - P")
-plt.legend(["Price - P"]) 
-plt.title("Relationship between strike and option value")
-
-# Put: Spot and Price -------------------------------------------------
-p = []
-s = range(1, 150, 5)
-
-for i in s:
-    p.append(option_pricer(i, 100, 1, 0.05, 0.25, option = 'put'))
-    
-plt.plot(s, p, color= "red")    
-plt.xlabel("Spot - S")
-plt.ylabel("Price - P")
-plt.grid('show')
-plt.legend(["Price - P"]) 
-plt.title("Relationship between spot and option value")
+num = len(distributions)
+nrows = square_divisors(num)[0] #function to determine ideal number o rows and columns, if the function is not available,... 
+ncols = square_divisors(num)[1] #...simply choose a number that makes sense in regards to the number of defined distributions
 
 
-# Put: Time and Price   -- note that this graph is quite different from a call option
-p = []
-t = range(0, 60, 1)
+# generating the graph
+plt.style.use('ggplot')
 
-for i in t:
-    p.append(option_pricer(100, 50, i, 0.05, 0.25, option = 'put'))
-    
-plt.plot(t, p, color= "red")    
-plt.xlabel("time - T")
-plt.ylabel("Price - P")
-plt.legend(["Price - P"]) 
-plt.title("Relationship between time and option value")
+fig, ax = plt.subplots(ncols = ncols, nrows = nrows, figsize = (4 * ncols, 2 * nrows))
+plt.subplots_adjust(hspace = 0.6) #the amount of space reserved between plots
+i = 0
+for row in range(nrows):
+    for col in range(ncols):
+            dist = list(distributions.items())[i]
+            sns.distplot(dist[1], bins = nbins, ax = ax[row][col])
+            ax[row][col].set_title(dist[0])
+            i += 1
+            if len(distributions) < nrows * ncols and i == num: 
+                fig.delaxes(ax[nrows -1 , ncols - 1])
+                break #if there were not a break the index would go out of range in case of even numbered list
 
-# Put: Risk-free rate and Price 
-p = []
-r = range(0, 100, 5)
-
-for i in r:
-    p.append(option_pricer(50, 50, 1 , i/100, 0.30, option = 'put'))
-    
-plt.plot(r, p, color= "red")    
-plt.xlabel("risk-free rate - r")
-plt.ylabel("Price - P")
-plt.legend(["Price - P"]) 
-plt.title("Relationship between risk-free rate and option value")
-
-# Put: Volatility rate and Price 
-p = []
-v = range(5, 100, 5)
-
-for i in v:
-    p.append(option_pricer(50, 100, 1, 0.05, i/100, option = 'put'))
-   
-plt.plot(v, p, color= "red")    
-plt.xlabel("volatility - v")
-plt.ylabel("Price - P")
-plt.legend(["Price - P"]) 
-plt.title("Relationship between volatility and option value")
-
-# Put: Dividend rate and Price 
-p = []
-q = range(5, 100, 1)
-
-for i in q:
-    p.append(option_pricer(100, 50, 1, 0.05, 0.05, i/100, option = 'put'))
-   
-plt.plot(q, p, color= "red")    
-plt.xlabel("dividend rate - q")
-plt.ylabel("Price - P")
-plt.legend(["Price - P"]) 
-plt.title("Relationship between dividend rate and option value")
-
-# all these graphs could be said to contain three parts. 
-# 1st part is one where the relationship is (almost) linear - any increase in K,P etc..causes an increase in option price with (almost) the same magnitude
-# 2nd part is one where the relationship becomes exponential and thus a bit more "interesting"
-# 3rd part it the one where the option value is (almost) zero - we can say that the option has no value in a certain interval
