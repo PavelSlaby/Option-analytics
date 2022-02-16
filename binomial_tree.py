@@ -13,12 +13,12 @@ sigmna - volatility of the underlying stock
 N - number of steps in the binomial model   (number of final nodes)
 '''    
 
+import numpy as np
+import math
 
 %precision 1
 np.set_printoptions(suppress=True) # supresses scientific notations when printing numpy arrays
 
-import numpy as np
-import math
 
 S0 = 49
 K = 50
